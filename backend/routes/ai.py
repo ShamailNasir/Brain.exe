@@ -8,6 +8,7 @@ router = APIRouter(prefix="/ai", tags=["AI"])
 class ContextRequest(BaseModel):
     tasks: List[Dict[str, Any]] = []
     stats: Dict[str, Any] = {}
+    notes: List[Dict[str, Any]] = []
 
 class TaskStringRequest(BaseModel):
     title: str
@@ -37,6 +38,11 @@ async def smart_suggestions(req: ContextRequest):
     res = await ai_service.get_smart_suggestions(req.dict())
     return {"suggestions": res}
 
+@router.post("/suggestions")
+async def suggestions(req: ContextRequest):
+    res = await ai_service.get_deep_feedback(req.dict())
+    return {"feedback": res}
+
 @router.post("/quote")
 async def get_quote():
     res = await ai_service.get_quote()
@@ -46,3 +52,8 @@ async def get_quote():
 async def ask_help(req: HelpRequest):
     res = await ai_service.ask_help(req.query, req.dict(), req.mode)
     return {"response": res}
+
+@router.post("/boss-task")
+async def boss_task(req: ContextRequest):
+    res = await ai_service.generate_boss_task(req.dict())
+    return res

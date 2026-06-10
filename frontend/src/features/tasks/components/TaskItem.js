@@ -1,11 +1,15 @@
 import { useState } from 'react';
+import { MoreHorizontal } from 'lucide-react';
 import styles from './TaskItem.module.css';
 import aiStyles from '@/components/AI/AI.module.css';
 import TaskBreakdownModal from '@/components/AI/TaskBreakdownModal';
+import TaskDetailModal from './TaskDetailModal';
+import { API_URL } from '@/lib/api';
 
 export default function TaskItem({ task, isCompleted, onToggle, onDelete, onEdit }) {
   const [isImproving, setIsImproving] = useState(false);
   const [showBreakdown, setShowBreakdown] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
   
   // Interactive Edit State
   const [isEditing, setIsEditing] = useState(false);
@@ -15,7 +19,7 @@ export default function TaskItem({ task, isCompleted, onToggle, onDelete, onEdit
     e.stopPropagation();
     setIsImproving(true);
     try {
-      const res = await fetch('http://localhost:8000/ai/enhance-task', {
+      const res = await fetch(`${API_URL}/ai/enhance-task`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title: task.title })
@@ -81,10 +85,27 @@ export default function TaskItem({ task, isCompleted, onToggle, onDelete, onEdit
               </div>
             ) : (
               <>
-                <span className={styles.title}>{task.title}</span>
-                {task.type === 'one-time' && task.date && (
-                  <span className={styles.dateBadge}>{task.date}</span>
-                )}
+                <div className={styles.titleRow}>
+                  <span className={`${styles.priorityIndicator} ${styles[task.priority || 'p4']}`} />
+                  <span className={styles.title}>{task.title}</span>
+                </div>
+                <div className={styles.metaRow}>
+                  {task.type === 'one-time' && task.date && (
+                    <span className={styles.dateBadge}>{task.date}</span>
+                  )}
+                  {task.tags && task.tags.length > 0 && (
+                    <div className={styles.tagList}>
+                      {task.tags.map(tag => (
+                        <span key={tag} className={styles.tagBadge}>#{tag}</span>
+                      ))}
+                    </div>
+                  )}
+                  {task.subtasks && task.subtasks.length > 0 && (
+                    <span className={styles.subtaskBadge}>
+                      {task.subtasks.filter(s => s.completed).length}/{task.subtasks.length} subtasks
+                    </span>
+                  )}
+                </div>
               </>
             )}
           </div>
@@ -111,15 +132,27 @@ export default function TaskItem({ task, isCompleted, onToggle, onDelete, onEdit
               className={styles.deleteBtn} 
               onClick={(e) => {
                 e.stopPropagation();
-                onDelete(task.id);
+                setShowDetail(true);
               }}
-              aria-label="Delete task"
+              title="Edit Task"
             >
-              ×
+              <MoreHorizontal size={16} />
             </button>
           </div>
         )}
       </li>
+
+      {showDetail && (
+        <TaskDetailModal 
+          task={task}
+          onClose={() => setShowDetail(false)}
+          onSave={onEdit}
+          onDelete={(id) => {
+            setShowDetail(false);
+            onDelete(id);
+          }}
+        />
+      )}
 
       {showBreakdown && (
         <TaskBreakdownModal 

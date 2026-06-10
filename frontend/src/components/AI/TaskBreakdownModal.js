@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import styles from './AI.module.css';
+import { API_BASE_URL } from '@/lib/config';
 
 export default function TaskBreakdownModal({ taskTitle, onClose }) {
   const [breakdown, setBreakdown] = useState(null);
@@ -8,7 +9,7 @@ export default function TaskBreakdownModal({ taskTitle, onClose }) {
   useEffect(() => {
     const fetchBreakdown = async () => {
       try {
-        const res = await fetch('http://localhost:8000/ai/breakdown', {
+        const res = await fetch(`${API_BASE_URL}/ai/breakdown`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ title: taskTitle })
@@ -47,10 +48,10 @@ export default function TaskBreakdownModal({ taskTitle, onClose }) {
             </div>
           ) : (
             <div className={styles.breakdownList}>
-              {breakdown.split('\\n').filter(line => line.trim()).map((line, i) => (
+              {breakdown.split('\n').filter(line => line.trim()).map((line, i) => (
                 <div key={i} className={styles.breakdownItem}>
                   <div className={styles.breakdownStepBadge}>{i + 1}</div>
-                  <div className={styles.breakdownText}>{line.replace(/^[-* 1-9.]+\\s*/, '')}</div>
+                  <div className={styles.breakdownText}>{line.replace(/^[-* 1-9.]+\s*/, '')}</div>
                 </div>
               ))}
             </div>

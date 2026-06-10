@@ -1,53 +1,58 @@
+/* ============================================================
+   BRAIN.EXE HEADER — Refined Zen
+   ============================================================ */
+
 .header {
   width: 100%;
-  background-color: var(--color-surface);
+  height: var(--header-height);
+  background: rgba(8, 8, 18, 0.82);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border-bottom: 1px solid var(--color-border);
-  padding: 0 1.5rem;
-  height: 60px;
+  padding: 0 var(--spacing-xl);
   display: flex;
   align-items: center;
   position: sticky;
   top: 0;
   z-index: 100;
-  backdrop-filter: blur(12px);
 }
 
 .container {
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--color-text-primary);
-  letter-spacing: -0.02em;
+.breadcrumb {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
-.icon {
-  font-size: 1.4rem;
+.breadcrumbSep {
+  opacity: 0.4;
+  font-size: 0.65rem;
 }
 
-.nav {
-  display: flex;
-  gap: 1.5rem;
-}
-
-.navLink {
-  color: var(--color-text-secondary);
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s;
+.pageTitle {
+  font-family: var(--font-display);
   font-size: 0.95rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--color-accent-light) 0%, var(--color-accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.01em;
 }
 
-.navLink:hover {
-  color: var(--color-accent);
+.rightSection {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
 }

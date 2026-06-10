@@ -1,13 +1,24 @@
 .futureBanner {
-  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  background: var(--color-accent-subtle);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--color-accent-glow);
+  border-left: 3px solid var(--color-accent);
   border-radius: var(--radius-lg);
   padding: var(--spacing-lg) var(--spacing-xl);
   display: flex;
   align-items: center;
   gap: var(--spacing-lg);
   margin-bottom: var(--spacing-xl);
-  box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.4);
-  color: white;
+  box-shadow: var(--shadow-sm), 0 0 20px var(--color-accent-glow);
+  color: var(--color-text-primary);
+}
+
+[data-theme="light"] .futureBanner {
+  background: var(--color-accent-subtle);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-accent);
+  color: var(--color-text-primary);
 }
 
 .futureIcon {
@@ -41,13 +52,18 @@
 }
 
 .quoteCard {
-  background: transparent;
-  padding: var(--spacing-lg) 0;
+  background: var(--color-surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl) var(--spacing-lg);
   margin-bottom: var(--spacing-xl);
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
+  box-shadow: var(--shadow-sm);
 }
 
 .quoteText {
@@ -88,8 +104,8 @@
   display: inline-block;
   width: 16px;
   height: 16px;
-  border: 2px solid rgba(16, 185, 129, 0.3);
-  border-top-color: #10b981;
+  border: 2px solid var(--color-accent-subtle);
+  border-top-color: var(--color-accent);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -177,13 +193,13 @@
 }
 
 .breakdownItem:hover {
-  border-color: #6d28d9;
+  border-color: var(--color-accent);
   box-shadow: var(--shadow-sm);
 }
 
 .breakdownStepBadge {
-  background: #ede9fe;
-  color: #6d28d9;
+  background: var(--color-accent);
+  color: white;
   font-weight: 800;
   width: 24px;
   height: 24px;
@@ -205,15 +221,15 @@
 .smartSuggestionBlock {
   margin-top: var(--spacing-sm);
   padding: 8px 12px;
-  background: #eff6ff;
+  background: var(--color-surface);
   border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 0.85rem;
-  color: #1e3a8a;
+  color: var(--color-text-secondary);
   cursor: pointer;
   transition: background 0.2s;
-  border: 1px dashed #bfdbfe;
+  border: 1px dashed var(--color-border);
 }
-.smartSuggestionBlock:hover { background: #dbeafe; }
+.smartSuggestionBlock:hover { background: var(--color-surface-hover); }

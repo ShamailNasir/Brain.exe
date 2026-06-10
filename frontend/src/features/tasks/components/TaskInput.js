@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import styles from './TaskInput.module.css';
 import aiStyles from '@/components/AI/AI.module.css';
+import { HoverGlowButton } from '@/components/ui/HoverGlowButton';
+import { API_URL } from '@/lib/api';
 
 export default function TaskInput({ onAdd, tasks }) {
   const [title, setTitle] = useState('');
@@ -17,7 +19,7 @@ export default function TaskInput({ onAdd, tasks }) {
     if (tasks && tasks.length > 0 && !title) {
       setLoadingSuggestion(true);
       try {
-        const res = await fetch('http://localhost:8000/ai/smart-suggestions', {
+        const res = await fetch(`${API_URL}/ai/smart-suggestions`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ tasks, stats: {} })
@@ -25,7 +27,7 @@ export default function TaskInput({ onAdd, tasks }) {
         if (res.ok) {
           const data = await res.json();
           // Remove bullet points and quotes to make it a clean actionable input
-          const cleanText = data.suggestions.replace(/^[-* 1.]\\s*/, '').replace(/["']/g, '');
+          const cleanText = data.suggestions.replace(/^[-* 1.]\s*/, '').replace(/["']/g, '');
           setSuggestion(cleanText);
         }
       } catch (err) {
@@ -71,9 +73,9 @@ export default function TaskInput({ onAdd, tasks }) {
             onFocus={handleFocus}
             required
           />
-          <button type="submit" className={styles.button} disabled={!title.trim()}>
+          <HoverGlowButton type="submit" className={styles.button} disabled={!title.trim()}>
             + Add
-          </button>
+          </HoverGlowButton>
         </div>
 
         <div className={styles.options}>

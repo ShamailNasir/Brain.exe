@@ -1,0 +1,93 @@
+.container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  /* Use the theme's background color instead of hardcoded #030303 */
+  background: var(--color-bg); 
+  min-height: 100vh;
+}
+
+.bgGradientMain {
+  position: absolute;
+  inset: 0;
+  /* Adjusting to theme-friendly colors */
+  background: radial-gradient(circle at 50% 50%, var(--color-glow) 0%, transparent 60%);
+  filter: blur(80px);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.shapesWrapper {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.shapeContainer {
+  position: absolute;
+}
+
+.shapeRelative {
+  position: relative;
+}
+
+.shapeBlur {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  backdrop-filter: blur(2px);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.1);
+}
+
+.shapeBlur::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.2), transparent 70%);
+}
+
+[data-theme="light"] .shapeBlur {
+  border: 2px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .shapeBlur::after {
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.4), transparent 70%);
+}
+
+.gradientIndigo {
+  background: linear-gradient(to right, rgba(99, 102, 241, 0.15), transparent);
+}
+
+.gradientRose {
+  background: linear-gradient(to right, rgba(244, 63, 94, 0.15), transparent);
+}
+
+.gradientViolet {
+  background: linear-gradient(to right, rgba(139, 92, 246, 0.15), transparent);
+}
+
+.gradientAmber {
+  background: linear-gradient(to right, rgba(245, 158, 11, 0.15), transparent);
+}
+
+.gradientCyan {
+  background: linear-gradient(to right, rgba(6, 182, 212, 0.15), transparent);
+}
+
+.shape1 { left: -5%; top: 20%; }
+.shape2 { right: 0%; top: 75%; }
+.shape3 { left: 10%; bottom: 10%; }
+.shape4 { right: 20%; top: 15%; }
+.shape5 { left: 25%; top: 10%; }
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, var(--color-bg), transparent, var(--color-bg));
+  pointer-events: none;
+  opacity: 0.8;
+}

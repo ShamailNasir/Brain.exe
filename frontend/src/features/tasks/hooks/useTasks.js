@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import useGamification from '../../gamification/hooks/useGamification';
+import { API_URL } from '@/lib/api';
 
 const STORAGE_KEY = 'ai_productivity_tasks';
 
@@ -30,34 +32,68 @@ function migrateLegacyTask(task) {
     completedDates: task.completedDates || (task.completed ? [getTodayStr()] : []),
     date: task.date || task.dueDate || null,
     createdAt: task.createdAt || Date.now(),
+    priority: task.priority || 'p4',
+    description: task.description || '',
+    subtasks: task.subtasks || [],
+    tags: task.tags || [],
   };
 }
 
 export default function useTasks() {
   const [tasks, setTasks] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const { addXP, removeXP } = useGamification();
 
   // Load on mount
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        setTasks(parsed.map(migrateLegacyTask));
-      } else {
-        // First-ever load: seed sample data
+    async function loadData() {
+      try {
+        const token = localStorage.getItem('quantum_token');
+        if (!token) throw new Error('No token');
+        const res = await fetch(`${API_URL}/api/tasks`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (res.ok) {
+          const dbTasks = await res.json();
+          if (dbTasks.length > 0) {
+            setTasks(dbTasks);
+            setIsLoaded(true);
+            return;
+          }
+        }
+      } catch (e) {}
+
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          setTasks(parsed.map(migrateLegacyTask));
+        } else {
+          setTasks(SAMPLE_TASKS);
+        }
+      } catch {
         setTasks(SAMPLE_TASKS);
       }
-    } catch {
-      setTasks(SAMPLE_TASKS);
+      setIsLoaded(true);
     }
-    setIsLoaded(true);
+    loadData();
   }, []);
 
   // Save on change
   useEffect(() => {
     if (isLoaded) {
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks)); } catch {}
+      const token = localStorage.getItem('quantum_token');
+      if (token) {
+        fetch(`${API_URL}/api/tasks`, {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(tasks)
+        }).catch(() => {});
+      }
     }
   }, [tasks, isLoaded]);
 
@@ -74,6 +110,10 @@ export default function useTasks() {
       completedDates: [],
       date: taskData.type === 'daily' ? null : (taskData.date || getTodayStr()),
       createdAt: Date.now(),
+      priority: taskData.priority || 'p4',
+      description: taskData.description || '',
+      subtasks: taskData.subtasks || [],
+      tags: taskData.tags || [],
     };
     setTasks(prev => [newTask, ...prev]);
   };
@@ -85,6 +125,13 @@ export default function useTasks() {
       prev.map(task => {
         if (task.id !== id) return task;
         const alreadyDone = task.completedDates.includes(target);
+        
+        if (alreadyDone) {
+          removeXP(task.type === 'daily' ? 10 : 25);
+        } else {
+          addXP(task.type === 'daily' ? 10 : 25);
+        }
+
         return {
           ...task,
           completedDates: alreadyDone
@@ -120,8 +167,14 @@ export default function useTasks() {
   };
 
   // Edit task
-  const editTask = (id, newTitle) => {
-    setTasks(prev => prev.map(t => t.id === id ? { ...t, title: newTitle } : t));
+  const editTask = (id, updates) => {
+    setTasks(prev => prev.map(t => {
+      if (t.id === id) {
+        if (typeof updates === 'string') return { ...t, title: updates };
+        return { ...t, ...updates };
+      }
+      return t;
+    }));
   };
 
   // Group daily tasks by category

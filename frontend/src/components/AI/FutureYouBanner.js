@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import styles from './AI.module.css';
+import { API_URL } from '@/lib/api';
 
 export default function FutureYouBanner({ tasks }) {
   const [message, setMessage] = useState('');
@@ -22,7 +24,7 @@ export default function FutureYouBanner({ tasks }) {
     const fetchMessage = async () => {
       setLoading(true);
       try {
-        const res = await fetch('http://localhost:8000/ai/future-message', {
+        const res = await fetch(`${API_URL}/ai/future-message`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ tasks })
@@ -46,7 +48,12 @@ export default function FutureYouBanner({ tasks }) {
   if (!message && !loading) return null;
 
   return (
-    <div className={styles.futureBanner}>
+    <motion.div 
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.4, delay: 0.1 }}
+      className={styles.futureBanner}
+    >
       <span className={styles.futureIcon}>🔮</span>
       <div className={styles.futureContent}>
         <p className={styles.futureLabel}>Future You says:</p>
@@ -56,6 +63,6 @@ export default function FutureYouBanner({ tasks }) {
           <p className={styles.futureText}>{message}</p>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }

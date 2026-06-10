@@ -75,7 +75,7 @@
   transition: all 0.2s;
 }
 
-.toggleBtn:hover { background: #eef2ff; }
+.toggleBtn:hover { background: var(--color-surface-hover); }
 
 .toggleActive {
   background: var(--color-accent) !important;

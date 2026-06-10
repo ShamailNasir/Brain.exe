@@ -1,20 +1,55 @@
-import Link from 'next/link';
+'use client';
+import { usePathname } from 'next/navigation';
+import LevelBadge from '../../features/gamification/components/LevelBadge';
+import ThemePicker from '../ThemePicker/ThemePicker';
 import styles from "./Header.module.css";
 
+const PAGE_TITLES = {
+  '/': 'Dashboard',
+  '/tasks': 'Tasks',
+  '/calendar': 'Calendar',
+  '/goals': 'Goals',
+  '/notes': 'Quick Notes',
+  '/insights': 'Insights',
+  '/settings': 'Settings',
+};
+
 export default function Header() {
+  const pathname = usePathname();
+  if (pathname === '/login' || pathname === '/register') return null;
+
+  const pageTitle = PAGE_TITLES[pathname] || 'Brain.exe';
+
   return (
     <header className={styles.header}>
       <div className={styles.container}>
-        <Link href="/" className={styles.title} style={{ textDecoration: 'none' }}>
-          <span className={styles.icon}>⚡</span>
-          Quantum
-        </Link>
-        <nav className={styles.nav}>
-          <Link href="/" className={styles.navLink}>Dashboard</Link>
-          <Link href="/tasks" className={styles.navLink}>Tasks</Link>
-          <Link href="/calendar" className={styles.navLink}>Calendar</Link>
-          <Link href="/insights" className={styles.navLink}>Insights</Link>
-        </nav>
+        <div className={styles.breadcrumb}>
+          <button 
+            onClick={() => window.dispatchEvent(new Event('sidebar-toggle'))}
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              color: 'var(--color-text-secondary)',
+              padding: '4px',
+              marginRight: '8px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            className="lg:hidden"
+            title="Toggle Menu"
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>menu</span>
+          </button>
+          <span>Brain.exe</span>
+          <span className={styles.breadcrumbSep}>/</span>
+          <span className={styles.pageTitle}>{pageTitle}</span>
+        </div>
+        <div className={styles.rightSection}>
+          <ThemePicker />
+          <LevelBadge />
+        </div>
       </div>
     </header>
   );

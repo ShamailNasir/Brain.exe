@@ -1,0 +1,48 @@
+.hoverButton {
+  position: relative;
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  backdrop-filter: blur(8px);
+  z-index: 1;
+}
+
+[data-theme="light"] .hoverButton {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.05) !important;
+  color: var(--color-text-primary) !important;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.glowDiv {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.4s ease-out, opacity 0.3s ease;
+  transform: translate(-50%, -50%) scale(0);
+  z-index: 0;
+}
+
+.glowActive {
+  opacity: 0.5;
+  transform: translate(-50%, -50%) scale(1.2);
+}
+
+.content {
+  position: relative;
+  z-index: 10;
+}

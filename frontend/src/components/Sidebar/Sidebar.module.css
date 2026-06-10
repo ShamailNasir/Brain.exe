@@ -1,0 +1,200 @@
+/* ============================================================
+   BRAIN.EXE SIDEBAR — Refined Zen
+   ============================================================ */
+
+.sidebar {
+  width: 240px;
+  min-width: 240px;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--sidebar-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-right: 1px solid var(--color-border);
+  padding: 20px 10px;
+  z-index: 50;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.collapsed {
+  width: 60px;
+  min-width: 60px;
+}
+
+/* ── Logo ── */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 6px 24px;
+  overflow: hidden;
+}
+
+.logoMark {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  background: var(--color-accent-subtle);
+  border: 1px solid var(--color-accent-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-accent);
+  flex-shrink: 0;
+  box-shadow: 0 0 12px var(--color-accent-glow);
+}
+
+.logoTextBlock {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.logoText {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.logoSub {
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+/* ── Nav ── */
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin-bottom: 8px;
+}
+
+.sectionLabel {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 4px 10px 6px;
+  white-space: nowrap;
+}
+
+.navItem {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  font-size: 0.86rem;
+  font-weight: 500;
+  font-family: var(--font-sans);
+  transition: color var(--transition-base), background var(--transition-base);
+  white-space: nowrap;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  overflow: hidden;
+}
+
+.navItem:hover {
+  background: var(--sidebar-hover);
+  color: var(--color-text-secondary);
+}
+
+.navItemActive {
+  color: var(--color-accent) !important;
+  background: var(--sidebar-active);
+}
+
+.navItemActive .navIcon {
+  color: var(--color-accent);
+}
+
+/* Animated active pill — left edge indicator */
+.activePill {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  background: var(--color-accent);
+  border-radius: 0 2px 2px 0;
+  box-shadow: 0 0 8px var(--color-accent-glow);
+}
+
+.navIcon {
+  flex-shrink: 0;
+  transition: color var(--transition-base);
+}
+
+.navLabel {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Bottom ── */
+.bottomSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  border-top: 1px solid var(--color-border);
+  padding-top: 10px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.collapseBtn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  font-weight: 500;
+  font-family: var(--font-sans);
+  transition: all var(--transition-base);
+  white-space: nowrap;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+}
+
+.collapseBtn:hover {
+  background: var(--sidebar-hover);
+  color: var(--color-text-secondary);
+}
+
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+}
